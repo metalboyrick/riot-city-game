@@ -10,11 +10,13 @@ var calm_time : float = DEFAULT_CALM
 var is_angry : bool = false
 var direction : Vector2 = Vector2.ZERO
 var demand_amount : int = 0
+var power : int = 0
 
 # select all the necessary child nodes
 onready var n_calm_timer := get_node("CalmTimer")
 onready var n_calm_bar := get_node("CalmBar")
 onready var n_demand_label := get_node("DemandLabel")
+onready var n_power_label := get_node("PowerLabel")
 onready var n_sprite := get_node("ColorRect")
 
 # signals
@@ -34,13 +36,18 @@ func _ready():
 	n_calm_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	n_demand_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	n_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	n_power_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	rng.randomize()
 	input_pickable = true
+	
+	demand_amount = floor(rng.randi_range(1, 6) * 100)
+	power = floor(rng.randi_range(1,5) * 10)
+	
 	n_calm_timer.wait_time = calm_time
 	n_calm_timer.start()
-	demand_amount = floor(rng.randi_range(1, 6) * 100)
-	n_demand_label.text = str(demand_amount)
+	n_demand_label.text = "Price: " + str(demand_amount)
+	n_power_label.text = "Power: " +  str(power)
 	
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
@@ -61,6 +68,10 @@ func _physics_process(delta):
 			emit_signal("s_anger_start")
 			
 		move_and_collide(direction * SPEED)
+
+func update_power(new_value: int):
+	power = new_value
+	n_power_label.text = "Power: " +  str(power)
 
 func _on_money_ok(mob_id:int):
 	if mob_id == get_instance_id():
