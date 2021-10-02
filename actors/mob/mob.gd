@@ -7,6 +7,7 @@ export var DEFAULT_CALM : float = 3
 # global variables
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var calm_time : float = DEFAULT_CALM
+var is_angry : bool = false
 var direction : Vector2 = Vector2.ZERO
 var demand_amount : int = 0
 
@@ -14,9 +15,11 @@ var demand_amount : int = 0
 onready var n_calm_timer := get_node("CalmTimer")
 onready var n_calm_bar := get_node("CalmBar")
 onready var n_demand_label := get_node("DemandLabel")
+onready var n_sprite := get_node("ColorRect")
 
 # signals
 signal s_anger_start
+signal s_mob_clicked(instance_id)
 
 # "constructor"
 # direction in radians
@@ -27,14 +30,25 @@ func init(i_angle: float, i_spawn_position: Vector2):
 	return self
 
 func _ready():
+	# don't let control-type nodes consume input
+	n_calm_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	n_demand_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	n_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	rng.randomize()
+	input_pickable = true
 	n_calm_timer.wait_time = calm_time
 	n_calm_timer.start()
 	demand_amount = floor(rng.randi_range(1, 6) * 100)
 	n_demand_label.text = str(demand_amount)
 	
+func _input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed && !is_angry:
+			print("clicked")
+			emit_signal("s_mob_clicked", get_instance_id())
 
-func _process(delta):
+func _physics_process(delta):
 	# calculate progress bar value and display
 	var calm_percent : float = 100.0 - (n_calm_timer.time_left/calm_time) * 100.0
 	n_calm_bar.value = calm_percent
@@ -44,6 +58,11 @@ func _process(delta):
 			n_calm_bar.visible = false
 			n_demand_label.text = "!"
 			modulate = Color(1,0,0)
+			is_angry = true
 			emit_signal("s_anger_start")
 			
 		move_and_collide(direction * SPEED)
+
+func _on_money_ok(mob_id:int):
+	if mob_id == get_instance_id():
+		queue_free()

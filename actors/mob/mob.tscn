@@ -7,6 +7,7 @@ radius = 8.0
 height = 0.0
 
 [node name="Mob" type="KinematicBody2D"]
+input_pickable = true
 script = ExtResource( 1 )
 SPEED = 0.1
 DEFAULT_CALM = 5.0
@@ -19,9 +20,6 @@ margin_bottom = 8.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
 
 [node name="CalmBar" type="ProgressBar" parent="."]
 margin_left = -16.0
@@ -46,3 +44,6 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )

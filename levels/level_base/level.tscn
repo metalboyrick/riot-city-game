@@ -5,6 +5,8 @@
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 3 )
+SPAWN_INTERVAL_HIGH = 2.0
+ALLOWED_SIMULTANEOUS = 2
 
 [node name="MobSpawn" parent="." instance=ExtResource( 2 )]
 position = Vector2( 416, 32 )
@@ -25,3 +27,11 @@ rotation = -2.35619
 
 [node name="SpawnTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="MoneyLabel" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "1000"
+__meta__ = {
+"_edit_use_anchors_": false
+}

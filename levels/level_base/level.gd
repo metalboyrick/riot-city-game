@@ -11,13 +11,19 @@ var mobs : Array = []
 var mobs_occupancy : Array  = []
 var money : int = 	MONEY
 
-onready var sc_mob = preload("res://actors/mob/mob.tscn")
-onready var n_spawn_timer = get_node("SpawnTimer")
+onready var sc_mob := preload("res://actors/mob/mob.tscn")
+onready var n_spawn_timer := get_node("SpawnTimer")
+onready var n_money_label := get_node("MoneyLabel")
+
+signal s_mob_money_ok(mob_id)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng.randomize()
 	assert(SPAWN_INTERVAL_LOW < SPAWN_INTERVAL_HIGH)
+	
+	# initialise money
+	n_money_label.text = str(MONEY)
 	
 	# initialise mob spawners
 	mob_spawns = get_tree().get_nodes_in_group("mob_spawner")
@@ -61,14 +67,28 @@ func spawn_mob_random():
 	
 	# connect the angry signal to the mob spawner
 	mob.connect("s_anger_start", mob_spawner_instance, "_on_anger_start")
+	mob.connect("s_mob_clicked", self, "_on_mob_clicked")
+	self.connect("s_mob_money_ok", mob, "_on_money_ok")
 	
 	# save the mob instance
 	mobs.append(mob)	
 	add_child(mob)
 	pass
+	
+func update_money(new_value: int):
+	money = new_value
+	n_money_label.text = str(money)
 
 func _on_spawn_clear(mob_spawner_id:int):
 	for i in range(mob_spawns.size()):
 		if mob_spawner_id == mob_spawns[i].get_instance_id():
 			mobs_occupancy[i] = false
 			return
+			
+func _on_mob_clicked(mob_id:int):
+	var mob_instance = instance_from_id(mob_id)
+	print(mob_instance)
+	if money >= mob_instance.demand_amount and !mob_instance.is_angry:
+		update_money(money - mob_instance.demand_amount)
+		emit_signal("s_mob_money_ok", mob_id)
+		
