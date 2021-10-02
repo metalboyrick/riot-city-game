@@ -4,14 +4,18 @@ export var SPAWN_INTERVAL_LOW : float = 0.0
 export var SPAWN_INTERVAL_HIGH : float = 5.0
 export var ALLOWED_SIMULTANEOUS : int = 1
 export var MONEY : int = 1000
+export var SOLDIER_COST : int = 50
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_spawns : Array = []
+var soldier_spawns : Array = []
 var mobs_per_lane : Array = []
+var soldiers_per_lane : Array = []
 var mobs_occupancy : Array  = []
 var money : int = 	MONEY
 
 onready var sc_mob := preload("res://actors/mob/mob.tscn")
+onready var sc_soldier := preload("res://actors/soldier/soldier.tscn")
 onready var n_spawn_timer := get_node("SpawnTimer")
 onready var n_money_label := get_node("MoneyLabel")
 
@@ -23,14 +27,22 @@ func _ready():
 	assert(SPAWN_INTERVAL_LOW < SPAWN_INTERVAL_HIGH)
 	
 	# initialise money
-	n_money_label.text = str(MONEY)
+	money = MONEY
+	n_money_label.text = "MONEY: " + str(money)
 	
+	# TODO: initialise paths
 	# initialise mob spawners
 	mob_spawns = get_tree().get_nodes_in_group("mob_spawner")
 	for mob_spawn in mob_spawns:
 		mob_spawn.connect("s_spawn_clear", self, "_on_spawn_clear")
 		mobs_occupancy.append(false)
 		mobs_per_lane.append([])
+		
+	soldier_spawns = get_tree().get_nodes_in_group("soldier_spawn")
+	for soldier_spawn in soldier_spawns:
+		# TODO: link all signals
+		soldier_spawn.connect("s_deploy_clicked", self, "_on_deploy_clicked")
+		pass
 		
 	assert(ALLOWED_SIMULTANEOUS <= mob_spawns.size())
 		
@@ -45,6 +57,9 @@ func _physics_process(delta):
 		n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
 		n_spawn_timer.start()
 		
+# TODO: implement soldier spawning
+func spawn_soldier():
+	pass
 
 func spawn_mob_random():
 	
@@ -64,7 +79,7 @@ func spawn_mob_random():
 	
 	mobs_occupancy[spawn_index] = true
 	var mob_spawner_instance = mob_spawns[spawn_index]
-	var mob = sc_mob.instance().init(mob_spawner_instance.rotation + PI / 2, mob_spawner_instance.position)
+	var mob = sc_mob.instance().init(mob_spawner_instance.get_global_transform().get_rotation() + PI / 2, mob_spawner_instance.global_position)
 	
 	# connect the angry signal to the mob spawner
 	mob.connect("s_anger_start", mob_spawner_instance, "_on_anger_start")
@@ -78,7 +93,7 @@ func spawn_mob_random():
 	
 func update_money(new_value: int):
 	money = new_value
-	n_money_label.text = str(money)
+	n_money_label.text = "MONEY: " + str(money)
 
 func _on_spawn_clear(mob_spawner_id:int):
 	for i in range(mob_spawns.size()):
@@ -101,4 +116,10 @@ func _on_mob_clicked(mob_id:int):
 	if money >= mob_instance.demand_amount and !mob_instance.is_angry:
 		update_money(money - mob_instance.demand_amount)
 		emit_signal("s_mob_money_ok", mob_id)
-		
+
+
+func _on_deploy_clicked(soldier_spawn_id : int):
+	update_money(money - SOLDIER_COST)
+	var soldier_spawner_instance = instance_from_id(soldier_spawn_id)
+	var soldier = sc_soldier.instance().init(soldier_spawner_instance.get_global_transform().get_rotation() + PI / 2, soldier_spawner_instance.global_position)
+	add_child(soldier)
