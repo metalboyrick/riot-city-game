@@ -21,4 +21,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CooldownBar" type="ProgressBar" parent="."]
+margin_left = 13.4725
+margin_top = 86.8425
+margin_right = 38.4725
+margin_bottom = 100.842
+rect_rotation = 270.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="pressed" from="DeployButton" to="SoldierSpawn" method="_on_DeployButton_pressed"]
+[connection signal="timeout" from="CooldownTimer" to="SoldierSpawn" method="_on_CooldownTimer_timeout"]

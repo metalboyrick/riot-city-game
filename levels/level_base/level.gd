@@ -5,19 +5,25 @@ export var SPAWN_INTERVAL_HIGH : float = 5.0
 export var ALLOWED_SIMULTANEOUS : int = 1
 export var MONEY : int = 1000
 export var SOLDIER_COST : int = 50
+export var SOLDIER_AMOUNT : int = 50
+export var DEFAULT_SOLDIER_POWER: int = 10
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
-var mob_spawns : Array = []
-var soldier_spawns : Array = []
-var mobs_per_lane : Array = []
-var soldiers_per_lane : Array = []
-var mobs_occupancy : Array  = []
 var money : int = 	MONEY
+
+var soldier_spawns : Array = []
+var total_soldier_power: int = SOLDIER_AMOUNT
+var soldiers_per_lane : Array = []
+
+var mob_spawns : Array = []
+var mobs_per_lane : Array = []
+var mobs_occupancy : Array  = []
 
 onready var sc_mob := preload("res://actors/mob/mob.tscn")
 onready var sc_soldier := preload("res://actors/soldier/soldier.tscn")
 onready var n_spawn_timer := get_node("SpawnTimer")
 onready var n_money_label := get_node("MoneyLabel")
+onready var n_soldier_label := get_node("SoldierLabel")
 
 signal s_mob_money_ok(mob_id)
 
@@ -28,7 +34,11 @@ func _ready():
 	
 	# initialise money
 	money = MONEY
-	n_money_label.text = "MONEY: " + str(money)
+	n_money_label.text = "MONEY: " + str(MONEY)
+	
+	#initialise soldier amount
+	total_soldier_power = SOLDIER_AMOUNT
+	n_soldier_label.text = "SOLDIER: " + str(SOLDIER_AMOUNT)
 	
 	# TODO: initialise paths
 	# initialise mob spawners
@@ -94,6 +104,11 @@ func spawn_mob_random():
 func update_money(new_value: int):
 	money = new_value
 	n_money_label.text = "MONEY: " + str(money)
+	
+func update_soldier(new_value: int):
+	total_soldier_power = new_value
+	n_soldier_label.text = "SOLDIER: " + str(new_value)
+	
 
 func _on_spawn_clear(mob_spawner_id:int):
 	for i in range(mob_spawns.size()):
@@ -119,7 +134,9 @@ func _on_mob_clicked(mob_id:int):
 
 
 func _on_deploy_clicked(soldier_spawn_id : int):
-	update_money(money - SOLDIER_COST)
-	var soldier_spawner_instance = instance_from_id(soldier_spawn_id)
-	var soldier = sc_soldier.instance().init(soldier_spawner_instance.get_global_transform().get_rotation() + PI / 2, soldier_spawner_instance.global_position)
-	add_child(soldier)
+	if money >= SOLDIER_COST and total_soldier_power >= DEFAULT_SOLDIER_POWER:
+		var soldier_spawner_instance = instance_from_id(soldier_spawn_id)
+		var soldier = sc_soldier.instance().init(soldier_spawner_instance.get_global_transform().get_rotation() + PI / 2, soldier_spawner_instance.global_position, DEFAULT_SOLDIER_POWER)
+		update_money(money - SOLDIER_COST)
+		update_soldier(total_soldier_power - soldier.power)
+		add_child(soldier)

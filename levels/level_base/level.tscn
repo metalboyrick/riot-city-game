@@ -22,9 +22,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SoldierLabel" type="Label" parent="."]
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 222.0
+margin_bottom = 22.0
+text = "SOLDIER: 40"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Path" parent="." instance=ExtResource( 1 )]
-position = Vector2( 248, 136 )
-rotation = 1.5708
+position = Vector2( 112, 144 )
+rotation = 4.71239
 
 [node name="MobSpawn" parent="Path" index="0"]
 position = Vector2( 0, -88 )
@@ -33,17 +43,34 @@ position = Vector2( 0, -88 )
 position = Vector2( 0, 88 )
 
 [node name="DeployButton" parent="Path" index="2"]
-margin_top = 104.0
-margin_bottom = 124.0
+margin_top = 96.0
+margin_bottom = 116.0
 
-[node name="SoldierLabel" type="Label" parent="."]
-margin_left = 136.0
-margin_top = 8.0
-margin_right = 222.0
-margin_bottom = 22.0
-text = "SOLDIERS: 40"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="CooldownBar" parent="Path" index="3"]
+margin_left = 16.0
+margin_top = 120.0
+margin_right = 41.0
+margin_bottom = 134.0
+
+[node name="Path2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 368, 144 )
+rotation = 1.5708
+
+[node name="MobSpawn" parent="Path2" index="0"]
+position = Vector2( 0, -88 )
+
+[node name="SoldierSpawn" parent="Path2" index="1"]
+position = Vector2( 0, 88 )
+
+[node name="DeployButton" parent="Path2" index="2"]
+margin_top = 96.0
+margin_bottom = 116.0
+
+[node name="CooldownBar" parent="Path2" index="3"]
+margin_left = 16.0
+margin_top = 120.0
+margin_right = 41.0
+margin_bottom = 134.0
 
 [editable path="Path"]
+[editable path="Path2"]
