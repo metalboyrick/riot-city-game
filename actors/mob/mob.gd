@@ -45,7 +45,6 @@ func _ready():
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed && !is_angry:
-			print("clicked")
 			emit_signal("s_mob_clicked", get_instance_id())
 
 func _physics_process(delta):

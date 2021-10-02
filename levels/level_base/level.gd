@@ -7,7 +7,7 @@ export var MONEY : int = 1000
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_spawns : Array = []
-var mobs : Array = []
+var mobs_per_lane : Array = []
 var mobs_occupancy : Array  = []
 var money : int = 	MONEY
 
@@ -30,6 +30,7 @@ func _ready():
 	for mob_spawn in mob_spawns:
 		mob_spawn.connect("s_spawn_clear", self, "_on_spawn_clear")
 		mobs_occupancy.append(false)
+		mobs_per_lane.append([])
 		
 	assert(ALLOWED_SIMULTANEOUS <= mob_spawns.size())
 		
@@ -71,7 +72,7 @@ func spawn_mob_random():
 	self.connect("s_mob_money_ok", mob, "_on_money_ok")
 	
 	# save the mob instance
-	mobs.append(mob)	
+	mobs_per_lane[spawn_index].append(mob.get_instance_id())	
 	add_child(mob)
 	pass
 	
@@ -87,7 +88,16 @@ func _on_spawn_clear(mob_spawner_id:int):
 			
 func _on_mob_clicked(mob_id:int):
 	var mob_instance = instance_from_id(mob_id)
-	print(mob_instance)
+	
+	# look for which lane it came from and clear occupancy
+	var i:int = 0
+	for lane in mobs_per_lane:
+		if lane.find(mob_id) != -1:
+			mobs_occupancy[i] = false
+			lane.remove(mob_id)
+			break
+		i += 1
+	
 	if money >= mob_instance.demand_amount and !mob_instance.is_angry:
 		update_money(money - mob_instance.demand_amount)
 		emit_signal("s_mob_money_ok", mob_id)
