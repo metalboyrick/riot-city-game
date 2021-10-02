@@ -2,6 +2,7 @@ extends Node2D
 
 export var SPAWN_INTERVAL_LOW : float = 0.0
 export var SPAWN_INTERVAL_HIGH : float = 5.0
+export var ALLOWED_SIMULTANEOUS : int = 1
 export var MONEY : int = 1000
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -15,6 +16,7 @@ onready var n_spawn_timer = get_node("SpawnTimer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	rng.randomize()
 	assert(SPAWN_INTERVAL_LOW < SPAWN_INTERVAL_HIGH)
 	
 	# initialise mob spawners
@@ -22,6 +24,8 @@ func _ready():
 	for mob_spawn in mob_spawns:
 		mob_spawn.connect("s_spawn_clear", self, "_on_spawn_clear")
 		mobs_occupancy.append(false)
+		
+	assert(ALLOWED_SIMULTANEOUS <= mob_spawns.size())
 		
 	# initialise spawn timer
 	n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
@@ -36,9 +40,21 @@ func _physics_process(delta):
 		
 
 func spawn_mob_random():
+	
+	# check for number of occupied space, higher than allowed, no spawn
+	var occupied_space: int = 0
+	for occupancy in mobs_occupancy:
+		if occupancy == true:
+			occupied_space += 1
+			
+	if occupied_space > ALLOWED_SIMULTANEOUS - 1:
+		return
+	
+	# check is spawner at the index is occupied
 	var spawn_index : int = rng.randi_range(0, mob_spawns.size() - 1)
 	if mobs_occupancy[spawn_index]:
 		return 
+	
 	mobs_occupancy[spawn_index] = true
 	var mob_spawner_instance = mob_spawns[spawn_index]
 	var mob = sc_mob.instance().init(mob_spawner_instance.rotation + PI / 2, mob_spawner_instance.position)

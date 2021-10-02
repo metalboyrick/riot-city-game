@@ -25,9 +25,9 @@ shape = SubResource( 1 )
 
 [node name="CalmBar" type="ProgressBar" parent="."]
 margin_left = -16.0
-margin_top = -24.0
+margin_top = -32.0
 margin_right = 16.0
-margin_bottom = -16.0
+margin_bottom = -24.0
 percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -35,3 +35,14 @@ __meta__ = {
 
 [node name="CalmTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="DemandLabel" type="Label" parent="."]
+margin_left = -23.8016
+margin_top = -21.6189
+margin_right = 24.1984
+margin_bottom = -7.6189
+text = "500"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
