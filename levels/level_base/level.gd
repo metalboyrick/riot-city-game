@@ -9,10 +9,12 @@ export var SOLDIER_AMOUNT : int = 200
 export var DEFAULT_SOLDIER_POWER: int = 20
 export var MAX_ANGER: int = 3
 export var DEFAULT_CALM: float = 3
+export var CENTRAL_HEALTH : int = 400
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var money : int = 	MONEY
 var anger : int = 0
+var health: int = 0
 
 var soldier_spawns : Array = []
 var total_soldier_power: int = SOLDIER_AMOUNT
@@ -28,6 +30,7 @@ onready var n_spawn_timer := get_node("SpawnTimer")
 onready var n_money_label := get_node("MoneyLabel")
 onready var n_soldier_label := get_node("SoldierLabel")
 onready var n_anger_label := get_node("AngerLabel")
+onready var n_health_label := get_node("HealthLabel")
 
 signal s_mob_money_ok(mob_id)
 
@@ -39,6 +42,7 @@ func _ready():
 	update_money(MONEY)
 	update_soldier(SOLDIER_AMOUNT)
 	update_anger(0)
+	update_health(CENTRAL_HEALTH)
 	
 	# TODO: initialise paths
 	# initialise mob spawners
@@ -97,6 +101,10 @@ func spawn_mob_random():
 	mobs_per_lane[spawn_index].append(mob.get_instance_id())	
 	add_child(mob)
 	pass
+
+func update_health(new_value: int):
+	health = new_value
+	n_health_label.text = "HEALTH: " + str(health)
 	
 func update_money(new_value: int):
 	money = new_value
@@ -158,3 +166,10 @@ func _on_clash(mob_id: int, power_difference: int, mob_is_angry : bool):
 	# handle returning soldiers
 	if power_difference < 0:
 		update_soldier(total_soldier_power + (-1 * power_difference))
+
+
+func _on_CentralBuilding_s_mob_entered(mob_id:int):
+	var mob_instance = instance_from_id(mob_id)
+	update_health(health - mob_instance.power)
+	mob_instance.queue_free()
+	
