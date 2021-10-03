@@ -6,10 +6,12 @@ export var ALLOWED_SIMULTANEOUS : int = 1
 export var MONEY : int = 1000
 export var SOLDIER_COST : int = 50
 export var SOLDIER_AMOUNT : int = 200
-export var DEFAULT_SOLDIER_POWER: int = 10
+export var DEFAULT_SOLDIER_POWER: int = 20
+export var MAX_ANGER: int = 3
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var money : int = 	MONEY
+var anger : int = 0
 
 var soldier_spawns : Array = []
 var total_soldier_power: int = SOLDIER_AMOUNT
@@ -24,6 +26,7 @@ onready var sc_soldier := preload("res://actors/soldier/soldier.tscn")
 onready var n_spawn_timer := get_node("SpawnTimer")
 onready var n_money_label := get_node("MoneyLabel")
 onready var n_soldier_label := get_node("SoldierLabel")
+onready var n_anger_label := get_node("AngerLabel")
 
 signal s_mob_money_ok(mob_id)
 
@@ -32,13 +35,9 @@ func _ready():
 	rng.randomize()
 	assert(SPAWN_INTERVAL_LOW < SPAWN_INTERVAL_HIGH)
 	
-	# initialise money
-	money = MONEY
-	n_money_label.text = "MONEY: " + str(MONEY)
-	
-	#initialise soldier amount
-	total_soldier_power = SOLDIER_AMOUNT
-	n_soldier_label.text = "SOLDIER: " + str(SOLDIER_AMOUNT)
+	update_money(MONEY)
+	update_soldier(SOLDIER_AMOUNT)
+	update_anger(0)
 	
 	# TODO: initialise paths
 	# initialise mob spawners
@@ -106,6 +105,19 @@ func update_soldier(new_value: int):
 	total_soldier_power = new_value
 	n_soldier_label.text = "SOLDIER: " + str(new_value)
 	
+func update_anger(new_value:int):
+	if anger < MAX_ANGER:
+		anger = new_value
+		n_anger_label.text = "ANGER: " + str(anger) + "/" + str(MAX_ANGER)
+
+func clear_occupancy_of_mob(mob_id):
+	var i:int = 0
+	for lane in mobs_per_lane:
+		if lane.find(mob_id) != -1:
+			mobs_occupancy[i] = false
+			lane.remove(mob_id)
+			break
+		i += 1
 
 func _on_spawn_clear(mob_spawner_id:int):
 	for i in range(mob_spawns.size()):
@@ -116,14 +128,7 @@ func _on_spawn_clear(mob_spawner_id:int):
 func _on_mob_clicked(mob_id:int):
 	var mob_instance = instance_from_id(mob_id)
 	
-	# look for which lane it came from and clear occupancy
-	var i:int = 0
-	for lane in mobs_per_lane:
-		if lane.find(mob_id) != -1:
-			mobs_occupancy[i] = false
-			lane.remove(mob_id)
-			break
-		i += 1
+	clear_occupancy_of_mob(mob_id)
 	
 	if money >= mob_instance.demand_amount and !mob_instance.is_angry:
 		update_money(money - mob_instance.demand_amount)
@@ -142,7 +147,12 @@ func _on_deploy_clicked(soldier_spawn_id : int):
 		update_soldier(total_soldier_power - soldier.power)
 		add_child(soldier)
 		
-func _on_clash(power_difference: int, mob_is_angry : bool):
+func _on_clash(mob_id: int, power_difference: int, mob_is_angry : bool):
+	
+	# update anger if soldier attacks white civilians
+	if !mob_is_angry:
+		update_anger(anger + 1)
+		clear_occupancy_of_mob(mob_id)
 	
 	# handle returning soldiers
 	if power_difference < 0:

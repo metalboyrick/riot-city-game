@@ -7,7 +7,7 @@ var direction : Vector2 = Vector2.ZERO
 
 onready var n_power_label := get_node("PowerLabel")
 
-signal s_clash(power_difference, mob_is_angry)
+signal s_clash(mob_id, power_difference, mob_is_angry)
 
 func init(i_angle: float, i_spawn_position: Vector2, i_power : int):
 	# convert radians to vector
@@ -36,6 +36,6 @@ func _physics_process(delta):
 			mob_instance.queue_free()
 			
 		# send data to level
-		emit_signal("s_clash", power_difference,is_mob_angry)
+		emit_signal("s_clash", collision.collider_id,power_difference,is_mob_angry)
 		
 		queue_free()

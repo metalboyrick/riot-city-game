@@ -72,5 +72,15 @@ margin_top = 120.0
 margin_right = 41.0
 margin_bottom = 134.0
 
+[node name="AngerLabel" type="Label" parent="."]
+margin_left = 264.0
+margin_top = 8.0
+margin_right = 337.0
+margin_bottom = 22.0
+text = "ANGER: 3/3"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [editable path="Path"]
 [editable path="Path2"]
