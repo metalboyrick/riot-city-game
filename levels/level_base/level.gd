@@ -5,7 +5,7 @@ export var SPAWN_INTERVAL_HIGH : float = 5.0
 export var ALLOWED_SIMULTANEOUS : int = 1
 export var MONEY : int = 1000
 export var SOLDIER_COST : int = 50
-export var SOLDIER_AMOUNT : int = 50
+export var SOLDIER_AMOUNT : int = 200
 export var DEFAULT_SOLDIER_POWER: int = 10
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -67,9 +67,6 @@ func _physics_process(delta):
 		n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
 		n_spawn_timer.start()
 		
-# TODO: implement soldier spawning
-func spawn_soldier():
-	pass
 
 func spawn_mob_random():
 	
@@ -137,6 +134,16 @@ func _on_deploy_clicked(soldier_spawn_id : int):
 	if money >= SOLDIER_COST and total_soldier_power >= DEFAULT_SOLDIER_POWER:
 		var soldier_spawner_instance = instance_from_id(soldier_spawn_id)
 		var soldier = sc_soldier.instance().init(soldier_spawner_instance.get_global_transform().get_rotation() + PI / 2, soldier_spawner_instance.global_position, DEFAULT_SOLDIER_POWER)
+		
+		# connect soldier signal
+		soldier.connect("s_clash",self,"_on_clash")
+		
 		update_money(money - SOLDIER_COST)
 		update_soldier(total_soldier_power - soldier.power)
 		add_child(soldier)
+		
+func _on_clash(power_difference: int, mob_is_angry : bool):
+	
+	# handle returning soldiers
+	if power_difference < 0:
+		update_soldier(total_soldier_power + (-1 * power_difference))
