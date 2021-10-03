@@ -13,26 +13,6 @@ MONEY = 2000
 [node name="SpawnTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="MoneyLabel" type="Label" parent="."]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 95.0
-margin_bottom = 22.0
-text = "MONEY: 2000"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SoldierLabel" type="Label" parent="."]
-margin_left = 136.0
-margin_top = 8.0
-margin_right = 222.0
-margin_bottom = 22.0
-text = "SOLDIER: 40"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Path" parent="." instance=ExtResource( 1 )]
 position = Vector2( 96, 144 )
 rotation = 4.71239
@@ -73,7 +53,17 @@ margin_top = 120.0
 margin_right = 41.0
 margin_bottom = 134.0
 
-[node name="AngerLabel" type="Label" parent="."]
+[node name="CentralBuilding" parent="." instance=ExtResource( 2 )]
+position = Vector2( 240, 144 )
+
+[node name="GUI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AngerLabel" type="Label" parent="GUI"]
 margin_left = 264.0
 margin_top = 8.0
 margin_right = 337.0
@@ -83,10 +73,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CentralBuilding" parent="." instance=ExtResource( 2 )]
-position = Vector2( 240, 144 )
+[node name="MoneyLabel" type="Label" parent="GUI"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 95.0
+margin_bottom = 22.0
+text = "MONEY: 2000"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="HealthLabel" type="Label" parent="."]
+[node name="HealthLabel" type="Label" parent="GUI"]
 margin_left = 232.0
 margin_top = 120.0
 margin_right = 272.0
@@ -96,7 +93,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SoldierLabel" type="Label" parent="GUI"]
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 222.0
+margin_bottom = 22.0
+text = "SOLDIER: 40"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TaxButton" type="Button" parent="GUI"]
+margin_left = 376.0
+margin_top = 8.0
+margin_right = 419.0
+margin_bottom = 28.0
+text = "Tax"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TrainButton" type="Button" parent="GUI"]
+margin_left = 424.0
+margin_top = 8.0
+margin_right = 467.0
+margin_bottom = 28.0
+text = "Train"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="s_mob_entered" from="CentralBuilding" to="." method="_on_CentralBuilding_s_mob_entered"]
+[connection signal="pressed" from="GUI/TaxButton" to="." method="_on_TaxButton_pressed"]
+[connection signal="pressed" from="GUI/TrainButton" to="." method="_on_TrainButton_pressed"]
 
 [editable path="Path"]
 [editable path="Path2"]

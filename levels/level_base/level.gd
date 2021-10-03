@@ -10,6 +10,8 @@ export var DEFAULT_SOLDIER_POWER: int = 20
 export var MAX_ANGER: int = 3
 export var DEFAULT_CALM: float = 3
 export var CENTRAL_HEALTH : int = 400
+export var TAX_VALUE : int = 1000
+export var TRAINING_COST : int  = 2000
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var money : int = 	MONEY
@@ -27,10 +29,10 @@ var mobs_occupancy : Array  = []
 onready var sc_mob := preload("res://actors/mob/mob.tscn")
 onready var sc_soldier := preload("res://actors/soldier/soldier.tscn")
 onready var n_spawn_timer := get_node("SpawnTimer")
-onready var n_money_label := get_node("MoneyLabel")
-onready var n_soldier_label := get_node("SoldierLabel")
-onready var n_anger_label := get_node("AngerLabel")
-onready var n_health_label := get_node("HealthLabel")
+onready var n_money_label := get_node("GUI/MoneyLabel")
+onready var n_soldier_label := get_node("GUI/SoldierLabel")
+onready var n_anger_label := get_node("GUI/AngerLabel")
+onready var n_health_label := get_node("GUI/HealthLabel")
 
 signal s_mob_money_ok(mob_id)
 signal s_can_deploy_soldier(spawner_id)
@@ -176,3 +178,13 @@ func _on_CentralBuilding_s_mob_entered(mob_id:int):
 	update_health(health - mob_instance.power)
 	mob_instance.queue_free()
 	
+
+
+func _on_TaxButton_pressed():
+	update_money(money + TAX_VALUE)
+	update_anger(anger + 1)
+
+
+func _on_TrainButton_pressed():
+	update_money(money - TRAINING_COST)
+	update_soldier(total_soldier_power + 100)
