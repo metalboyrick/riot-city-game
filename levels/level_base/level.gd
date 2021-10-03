@@ -33,6 +33,7 @@ onready var n_anger_label := get_node("AngerLabel")
 onready var n_health_label := get_node("HealthLabel")
 
 signal s_mob_money_ok(mob_id)
+signal s_can_deploy_soldier(spawner_id)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,6 +57,7 @@ func _ready():
 	for soldier_spawn in soldier_spawns:
 		# TODO: link all signals
 		soldier_spawn.connect("s_deploy_clicked", self, "_on_deploy_clicked")
+		self.connect("s_can_deploy_soldier", soldier_spawn, "_on_deploy_ok")
 		pass
 		
 	assert(ALLOWED_SIMULTANEOUS <= mob_spawns.size())
@@ -146,6 +148,7 @@ func _on_mob_clicked(mob_id:int):
 
 func _on_deploy_clicked(soldier_spawn_id : int):
 	if money >= SOLDIER_COST and total_soldier_power >= DEFAULT_SOLDIER_POWER:
+		emit_signal("s_can_deploy_soldier", soldier_spawn_id)
 		var soldier_spawner_instance = instance_from_id(soldier_spawn_id)
 		var soldier = sc_soldier.instance().init(soldier_spawner_instance.get_global_transform().get_rotation() + PI / 2, soldier_spawner_instance.global_position, DEFAULT_SOLDIER_POWER)
 		
