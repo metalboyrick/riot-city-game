@@ -25,10 +25,13 @@ signal s_mob_clicked(instance_id)
 
 # "constructor"
 # direction in radians
-func init(i_angle: float, i_spawn_position: Vector2):
+func init(i_angle: float, i_spawn_position: Vector2, i_calm_time: float):
 	# convert radians to vector
 	direction = Vector2(cos(i_angle), sin(i_angle))
 	position = i_spawn_position
+	if i_calm_time == 0:
+		is_angry = true
+	calm_time = i_calm_time
 	return self
 
 func _ready():
@@ -44,9 +47,14 @@ func _ready():
 	demand_amount = floor(rng.randi_range(1, 6) * 100)
 	power = floor(rng.randi_range(1,5) * 10)
 	
-	n_calm_timer.wait_time = calm_time
-	n_calm_timer.start()
-	n_demand_label.text = "Price: " + str(demand_amount)
+	if !is_angry:
+		n_calm_timer.wait_time = calm_time
+		n_calm_timer.start()
+		n_demand_label.text = "Price: " + str(demand_amount)
+	else:
+		n_demand_label.text = "!"
+		modulate = Color(1,0,0)
+		emit_signal("s_anger_start")
 	n_power_label.text = "Power: " +  str(power)
 	
 func _input_event(viewport, event, shape_idx):
@@ -56,9 +64,10 @@ func _input_event(viewport, event, shape_idx):
 
 func _physics_process(delta):
 	# calculate progress bar value and display
-	var calm_percent : float = 100.0 - (n_calm_timer.time_left/calm_time) * 100.0
-	n_calm_bar.value = calm_percent
-	
+	if !is_angry:
+		var calm_percent : float = 100.0 - (n_calm_timer.time_left/calm_time) * 100.0
+		n_calm_bar.value = calm_percent
+		
 	if n_calm_timer.time_left == 0:
 		if n_calm_bar.visible:
 			n_calm_bar.visible = false

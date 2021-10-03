@@ -8,6 +8,7 @@ export var SOLDIER_COST : int = 50
 export var SOLDIER_AMOUNT : int = 200
 export var DEFAULT_SOLDIER_POWER: int = 20
 export var MAX_ANGER: int = 3
+export var DEFAULT_CALM: float = 3
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var money : int = 	MONEY
@@ -63,7 +64,7 @@ func _ready():
 func _physics_process(delta):
 	if(n_spawn_timer.is_stopped()):
 		spawn_mob_random()
-		n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
+		n_spawn_timer.wait_time = rng.randf_range((SPAWN_INTERVAL_LOW / (anger + 1)) + 2, (SPAWN_INTERVAL_HIGH / (anger + 1)) + 2)
 		n_spawn_timer.start()
 		
 
@@ -85,7 +86,7 @@ func spawn_mob_random():
 	
 	mobs_occupancy[spawn_index] = true
 	var mob_spawner_instance = mob_spawns[spawn_index]
-	var mob = sc_mob.instance().init(mob_spawner_instance.get_global_transform().get_rotation() + PI / 2, mob_spawner_instance.global_position)
+	var mob = sc_mob.instance().init(mob_spawner_instance.get_global_transform().get_rotation() + PI / 2, mob_spawner_instance.global_position, DEFAULT_CALM - anger)
 	
 	# connect the angry signal to the mob spawner
 	mob.connect("s_anger_start", mob_spawner_instance, "_on_anger_start")

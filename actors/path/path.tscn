@@ -33,7 +33,6 @@ __meta__ = {
 }
 
 [node name="CooldownTimer" type="Timer" parent="."]
-wait_time = 5.0
 one_shot = true
 
 [connection signal="pressed" from="DeployButton" to="SoldierSpawn" method="_on_DeployButton_pressed"]

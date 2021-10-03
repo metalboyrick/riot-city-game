@@ -9,7 +9,7 @@ height = 0.0
 [node name="Soldier" type="KinematicBody2D"]
 modulate = Color( 0, 1, 0.0862745, 1 )
 script = ExtResource( 1 )
-SPEED = 2.0
+SPEED = 5.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -8.0
