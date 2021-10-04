@@ -17,7 +17,7 @@ onready var n_calm_timer := get_node("CalmTimer")
 onready var n_calm_bar := get_node("CalmBar")
 onready var n_demand_label := get_node("DemandLabel")
 onready var n_power_label := get_node("PowerLabel")
-onready var n_sprite := get_node("ColorRect")
+onready var n_sprite := get_node("AnimatedSprite")
 
 # signals
 signal s_anger_start
@@ -38,7 +38,6 @@ func _ready():
 	# don't let control-type nodes consume input
 	n_calm_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	n_demand_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	n_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	n_power_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	rng.randomize()
@@ -72,8 +71,8 @@ func _physics_process(delta):
 		if n_calm_bar.visible:
 			n_calm_bar.visible = false
 			n_demand_label.text = "!"
-			modulate = Color(1,0,0)
 			is_angry = true
+			n_sprite.animation = "angry"
 			emit_signal("s_anger_start")
 			
 		move_and_collide(direction * SPEED)
