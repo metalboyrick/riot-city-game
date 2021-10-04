@@ -86,6 +86,7 @@ stream = ExtResource( 3 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 240, 136 )
 frames = SubResource( 9 )
+frame = 3
 playing = true
 __meta__ = {
 "_edit_lock_": true

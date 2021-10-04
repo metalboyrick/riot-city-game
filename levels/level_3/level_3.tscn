@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://levels/level_base/level.tscn" type="PackedScene" id=1]
+
+[node name="Level" instance=ExtResource( 1 )]
+LEVEL = 3
+SPAWN_INTERVAL_LOW = 5.0
+SPAWN_INTERVAL_HIGH = 8.0
+MONEY = 3000
+DEFAULT_CALM = 4.0
+CENTRAL_HEALTH = 250
+TIME = 80
+
+[editable path="Path"]
+[editable path="Path2"]
+[editable path="Path3"]
+[editable path="Path4"]
+[editable path="CentralBuilding"]

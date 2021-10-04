@@ -44,7 +44,9 @@ extents = Vector2( 8, 8 )
 size = 14
 font_data = ExtResource( 4 )
 
-[node name="Soldier" type="KinematicBody2D"]
+[node name="Soldier" type="KinematicBody2D" groups=[
+"soldier",
+]]
 script = ExtResource( 1 )
 SPEED = 0.75
 

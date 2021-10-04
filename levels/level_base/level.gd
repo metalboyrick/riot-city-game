@@ -73,6 +73,7 @@ func _ready():
 	n_health_bar.max_value = CENTRAL_HEALTH
 	n_tax_label.text = str(TAX_VALUE)
 	n_train_label.text = str(TRAINING_COST)
+	$GUI/LevelLabel.text = "LV" + str(LEVEL)
 
 
 	update_money(MONEY)
@@ -293,10 +294,14 @@ func _on_QuitButton_pressed():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
 	if is_next_lvl:
-		get_tree().change_scene("res://levels/main.tscn")
+		if LEVEL== 3:
+			get_tree().change_scene("res://levels/main.tscn")
+		else:
+			get_tree().change_scene("res://levels/level_" + str(LEVEL + 1)  + "/level_" + str(LEVEL + 1) + ".tscn")
 	
 	if is_quit:
 		get_tree().change_scene("res://levels/main.tscn")
+		
 	
 	
 # win
