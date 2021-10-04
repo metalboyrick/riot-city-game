@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://actors/soldier_spawn/soldier_spawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/mob_spawn/mob_spawn.tscn" type="PackedScene" id=2]
 [ext_resource path="res://actors/path/path.gd" type="Script" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 8.0
 
 [node name="Path" type="Node2D"]
 script = ExtResource( 3 )
@@ -35,5 +38,13 @@ __meta__ = {
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="SafePoint" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SafePoint"]
+position = Vector2( 0, -80 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
 [connection signal="pressed" from="DeployButton" to="SoldierSpawn" method="_on_DeployButton_pressed"]
 [connection signal="timeout" from="CooldownTimer" to="SoldierSpawn" method="_on_CooldownTimer_timeout"]
+[connection signal="body_entered" from="SafePoint" to="." method="_on_SafePoint_body_entered"]

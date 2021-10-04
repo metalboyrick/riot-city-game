@@ -5,7 +5,7 @@ export var SPEED : float = 0.1
 var power: int = 0
 var direction : Vector2 = Vector2.ZERO
 
-onready var n_power_label := get_node("PowerLabel")
+onready var n_power_label := get_node("MoneyBubble/PowerLabel")
 
 signal s_clash(mob_id, power_difference, mob_is_angry)
 
@@ -18,7 +18,7 @@ func init(i_angle: float, i_spawn_position: Vector2, i_power : int):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	n_power_label.text = "Power: " + str(power)
+	n_power_label.text = str(power)
 
 func _physics_process(delta):
 	var collision  = move_and_collide(direction * SPEED)

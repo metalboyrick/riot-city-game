@@ -44,6 +44,9 @@ margin_top = 120.0
 margin_right = 41.0
 margin_bottom = 134.0
 
+[node name="CollisionShape2D" parent="Path/SafePoint" index="0"]
+position = Vector2( -1.51382, -64.4803 )
+
 [node name="Path2" parent="." instance=ExtResource( 1 )]
 position = Vector2( 400, 216 )
 rotation = -4.21672
@@ -63,6 +66,9 @@ margin_left = 16.0
 margin_top = 120.0
 margin_right = 41.0
 margin_bottom = 134.0
+
+[node name="CollisionShape2D" parent="Path2/SafePoint" index="0"]
+position = Vector2( 1.51379, -64.4803 )
 
 [node name="Path3" parent="." instance=ExtResource( 1 )]
 position = Vector2( 400, 80 )
@@ -84,6 +90,9 @@ margin_top = 120.0
 margin_right = 41.0
 margin_bottom = 134.0
 
+[node name="CollisionShape2D" parent="Path3/SafePoint" index="0"]
+position = Vector2( -1.51373, -64.4803 )
+
 [node name="Path4" parent="." instance=ExtResource( 1 )]
 position = Vector2( 80, 80 )
 rotation = -1.07512
@@ -104,6 +113,9 @@ margin_top = 120.0
 margin_right = 41.0
 margin_bottom = 134.0
 
+[node name="CollisionShape2D" parent="Path4/SafePoint" index="0"]
+position = Vector2( 1.51381, -64.4803 )
+
 [node name="CentralBuilding" parent="." instance=ExtResource( 2 )]
 position = Vector2( 240, 136 )
 
@@ -111,8 +123,9 @@ position = Vector2( 240, 136 )
 position = Vector2( 0, -8 )
 
 [node name="GUI" type="Control" parent="."]
+margin_top = 1.0
 margin_right = 40.0
-margin_bottom = 40.0
+margin_bottom = 41.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
