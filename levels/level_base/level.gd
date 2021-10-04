@@ -7,7 +7,7 @@ export var MONEY : int = 1000
 export var SOLDIER_COST : int = 50
 export var SOLDIER_AMOUNT : int = 200
 export var DEFAULT_SOLDIER_POWER: int = 20
-export var MAX_ANGER: int = 3
+export var MAX_ANGER: int = 4
 export var DEFAULT_CALM: float = 3
 export var CENTRAL_HEALTH : int = 400
 export var TAX_VALUE : int = 1000
@@ -108,6 +108,9 @@ func spawn_mob_random():
 	pass
 
 func update_health(new_value: int):
+	if(new_value <= 0):
+		show_game_over()
+		return 
 	health = new_value
 	n_health_label.text = "HEALTH: " + str(health)
 	
@@ -123,6 +126,10 @@ func update_anger(new_value:int):
 	if anger < MAX_ANGER:
 		anger = new_value
 		n_anger_label.text = "ANGER: " + str(anger) + "/" + str(MAX_ANGER)
+
+func show_game_over():
+	get_tree().paused = true
+	n_game_over_menu.show()
 
 func clear_occupancy_of_mob(mob_id):
 	var i:int = 0
@@ -179,8 +186,7 @@ func _on_CentralBuilding_s_mob_entered(mob_id:int):
 	update_health(health - mob_instance.power)
 	mob_instance.queue_free()
 	
-
-
+	
 func _on_TaxButton_pressed():
 	update_money(money + TAX_VALUE)
 	update_anger(anger + 1)

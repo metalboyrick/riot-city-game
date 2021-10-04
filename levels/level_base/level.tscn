@@ -9,6 +9,7 @@ script = ExtResource( 3 )
 SPAWN_INTERVAL_LOW = 1.0
 SPAWN_INTERVAL_HIGH = 2.0
 MONEY = 2000
+CENTRAL_HEALTH = 50
 
 [node name="SpawnTimer" type="Timer" parent="."]
 one_shot = true
