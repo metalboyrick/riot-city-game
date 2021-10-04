@@ -35,6 +35,8 @@ onready var n_anger_label := get_node("GUI/AngerLabel")
 onready var n_anger_bar := get_node("GUI/AngerBar")
 onready var n_health_bar := get_node("GUI/HealthBar")
 onready var n_game_over_menu := get_node("GUI/GameOverMenu")
+onready var n_tax_label := get_node("GUI/TaxLabel")
+onready var n_train_label := get_node("GUI/TrainLabel")
 
 signal s_mob_money_ok(mob_id)
 signal s_can_deploy_soldier(spawner_id)
@@ -46,6 +48,8 @@ func _ready():
 	
 	# set health bar value
 	n_health_bar.max_value = CENTRAL_HEALTH
+	n_tax_label.text = str(TAX_VALUE)
+	n_train_label.text = str(TRAINING_COST)
 	
 	update_money(MONEY)
 	update_soldier(SOLDIER_AMOUNT)

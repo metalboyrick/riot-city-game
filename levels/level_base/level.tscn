@@ -16,20 +16,20 @@
 [ext_resource path="res://assets/ui/in-game/money_display_icon.png" type="Texture" id=14]
 [ext_resource path="res://assets/ui/in-game/anger_level.png" type="Texture" id=15]
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="DynamicFontData" id=10]
 font_path = "res://assets/fonts/ARCADECLASSIC.TTF"
 
-[sub_resource type="DynamicFont" id=2]
-font_data = SubResource( 1 )
+[sub_resource type="DynamicFont" id=11]
+font_data = SubResource( 10 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=12]
 font_data = ExtResource( 12 )
 
-[sub_resource type="DynamicFontData" id=4]
+[sub_resource type="DynamicFontData" id=13]
 font_path = "res://assets/fonts/ARCADECLASSIC.TTF"
 
-[sub_resource type="DynamicFont" id=5]
-font_data = SubResource( 4 )
+[sub_resource type="DynamicFont" id=14]
+font_data = SubResource( 13 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 15 )
@@ -47,7 +47,7 @@ region = Rect2( 160, 0, 80, 16 )
 atlas = ExtResource( 15 )
 region = Rect2( 240, 0, 80, 16 )
 
-[sub_resource type="SpriteFrames" id=10]
+[sub_resource type="SpriteFrames" id=15]
 animations = [ {
 "frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ) ],
 "loop": true,
@@ -191,7 +191,7 @@ margin_left = 336.0
 margin_top = 7.0
 margin_right = 400.0
 margin_bottom = 24.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 11 )
 text = "GASGSAGSA"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -212,7 +212,7 @@ margin_left = 80.0
 margin_top = 7.0
 margin_right = 112.0
 margin_bottom = 24.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 12 )
 text = "40"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -224,7 +224,7 @@ margin_left = 192.0
 margin_top = 7.0
 margin_right = 256.0
 margin_bottom = 23.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 14 )
 text = "ANGER: 3/3"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -232,7 +232,7 @@ __meta__ = {
 
 [node name="AngerBar" type="AnimatedSprite" parent="GUI"]
 position = Vector2( 232, 15 )
-frames = SubResource( 10 )
+frames = SubResource( 15 )
 
 [node name="HealthBar" type="TextureProgress" parent="GUI"]
 margin_left = 192.0
@@ -247,10 +247,55 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TaxLabel" type="Label" parent="GUI"]
+margin_left = 176.0
+margin_top = 248.0
+margin_right = 216.0
+margin_bottom = 265.0
+custom_fonts/font = SubResource( 12 )
+text = "40"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddLabel" type="Label" parent="GUI"]
+margin_left = 136.0
+margin_top = 248.0
+margin_right = 176.0
+margin_bottom = 285.0
+custom_fonts/font = SubResource( 12 )
+text = "Add
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddLabel2" type="Label" parent="GUI"]
+margin_left = 296.0
+margin_top = 248.0
+margin_right = 336.0
+margin_bottom = 285.0
+custom_fonts/font = SubResource( 12 )
+text = "Pay"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TrainLabel" type="Label" parent="GUI"]
+margin_left = 336.0
+margin_top = 248.0
+margin_right = 384.0
+margin_bottom = 265.0
+custom_fonts/font = SubResource( 12 )
+text = "40"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TaxButton" type="TextureButton" parent="GUI"]
-margin_left = 96.0
+margin_left = 64.0
 margin_top = 247.0
-margin_right = 160.0
+margin_right = 128.0
 margin_bottom = 267.0
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 10 )
@@ -259,9 +304,9 @@ __meta__ = {
 }
 
 [node name="TrainButton" type="TextureButton" parent="GUI"]
-margin_left = 312.0
+margin_left = 384.0
 margin_top = 247.0
-margin_right = 376.0
+margin_right = 448.0
 margin_bottom = 267.0
 texture_normal = ExtResource( 11 )
 texture_pressed = ExtResource( 9 )
@@ -305,6 +350,26 @@ margin_top = 7.0
 margin_right = 336.0
 margin_bottom = 24.0
 texture = ExtResource( 14 )
+
+[node name="TextureRect3" type="TextureRect" parent="GUI"]
+margin_left = 160.0
+margin_top = 248.0
+margin_right = 176.0
+margin_bottom = 265.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect4" type="TextureRect" parent="GUI"]
+margin_left = 320.0
+margin_top = 247.0
+margin_right = 336.0
+margin_bottom = 264.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="s_mob_entered" from="CentralBuilding" to="." method="_on_CentralBuilding_s_mob_entered"]
 [connection signal="pressed" from="GUI/TaxButton" to="." method="_on_TaxButton_pressed"]

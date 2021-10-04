@@ -85,7 +85,6 @@ DEFAULT_CALM = 5.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0.33371, 4.76837e-07 )
-scale = Vector2( 1, 1 )
 frames = SubResource( 7 )
 frame = 3
 speed_scale = 2.0
