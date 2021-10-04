@@ -1,5 +1,7 @@
 extends Node2D
 
+export var LEVEL : int = 1
+
 export var SPAWN_INTERVAL_LOW : float = 0.0
 export var SPAWN_INTERVAL_HIGH : float = 5.0
 export var ALLOWED_SIMULTANEOUS : int = 1
@@ -18,14 +20,19 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var money : int = 	MONEY
 var anger : int = 0
 var health: int = 0
+var is_quit: bool = false
+var is_next_lvl :bool = false
+var is_paused: bool = false
 
 var soldier_spawns : Array = []
 var total_soldier_power: int = SOLDIER_AMOUNT
 var soldiers_per_lane : Array = []
+var soldiers: Array = []
 
 var mob_spawns : Array = []
 var mobs_per_lane : Array = []
 var mobs_occupancy : Array  = []
+var mobs : Array = []
 
 onready var sc_mob := preload("res://actors/mob/mob.tscn")
 onready var sc_soldier := preload("res://actors/soldier/soldier.tscn")
@@ -41,6 +48,8 @@ onready var n_pause_menu := get_node("GUI/PauseMenu")
 onready var n_tax_label := get_node("GUI/TaxLabel")
 onready var n_train_label := get_node("GUI/TrainLabel")
 onready var n_time_label := get_node("GUI/TimeLabel")
+onready var n_transition_rect_anim := get_node("Cover/AnimationPlayer")
+onready var n_bgm := get_node("BGM")
 
 # sounds
 onready var n_hit_sound := get_node("HitSound")
@@ -64,6 +73,7 @@ func _ready():
 	n_health_bar.max_value = CENTRAL_HEALTH
 	n_tax_label.text = str(TAX_VALUE)
 	n_train_label.text = str(TRAINING_COST)
+
 
 	update_money(MONEY)
 	update_soldier(SOLDIER_AMOUNT)
@@ -91,6 +101,9 @@ func _ready():
 	n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
 	n_game_timer.wait_time = TIME
 	
+	n_bgm.play()
+	$Cover/AnimationPlayer.play("show_scene")
+	
 	n_spawn_timer.start()
 	n_game_timer.start()
 
@@ -98,7 +111,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	n_time_label.text = str(int(n_game_timer.time_left))
-	if(n_spawn_timer.is_stopped()):
+	if(n_spawn_timer.is_stopped() and !is_paused):
 		spawn_mob_random()
 		n_spawn_timer.wait_time = rng.randf_range((SPAWN_INTERVAL_LOW / (anger + 1)) + 2, (SPAWN_INTERVAL_HIGH / (anger + 1)) + 2)
 		n_spawn_timer.start()
@@ -130,9 +143,9 @@ func spawn_mob_random():
 	self.connect("s_mob_money_ok", mob, "_on_money_ok")
 	
 	# save the mob instance
-	mobs_per_lane[spawn_index].append(mob.get_instance_id())	
+	mobs_per_lane[spawn_index].append(mob.get_instance_id())
+	mobs.append(mob)	
 	add_child(mob)
-	pass
 
 func update_health(new_value: int):
 	if(new_value <= 0):
@@ -156,7 +169,9 @@ func update_anger(new_value:int):
 		n_anger_bar.frame = new_value
 
 func show_game_over():
+	n_bgm.stop()
 	n_gameover_sound.play()
+	is_paused = true
 	get_tree().paused = true
 	n_game_over_menu.show()
 
@@ -196,6 +211,7 @@ func _on_deploy_clicked(soldier_spawn_id : int):
 		
 		# connect soldier signal
 		soldier.connect("s_clash",self,"_on_clash")
+		soldiers.append(soldier)
 		
 		update_money(money - SOLDIER_COST)
 		update_soldier(total_soldier_power - soldier.power)
@@ -242,15 +258,60 @@ func _on_TrainButton_pressed():
 
 func _on_RestartButton_pressed():
 	get_tree().paused = false
+	n_bgm.play()
 	n_game_over_menu.hide()
 	get_tree().reload_current_scene()
 
 
 func _on_ContinueButton_pressed():
 	get_tree().paused = false
+	n_bgm.play()
 	n_pause_menu.hide()
 
 
 func _on_PauseButton_pressed():
 	n_pause_menu.show()
+	is_paused = true
+	n_bgm.stop()
 	get_tree().paused = true
+
+
+func _on_QuitButton_pressed():
+	is_quit = true
+	get_tree().paused = false
+	n_pause_menu.hide()
+	n_game_over_menu.hide()
+	var mobs_present = get_tree().get_nodes_in_group("mob")
+	for mob in mobs_present:
+		mob.queue_free()
+	var sols_present = get_tree().get_nodes_in_group("soldier")
+	for soldier in sols_present:
+		sols_present.queue_free()
+	$Cover/AnimationPlayer.play("hide_scene")
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	
+	if is_next_lvl:
+		get_tree().change_scene("res://levels/main.tscn")
+	
+	if is_quit:
+		get_tree().change_scene("res://levels/main.tscn")
+	
+	
+# win
+func _on_GameTimer_timeout():
+	n_bgm.stop()
+	is_paused = true
+	is_next_lvl = true
+
+	var mobs_present = get_tree().get_nodes_in_group("mob")
+	for mob in mobs_present:
+		mob.queue_free()
+	var sols_present = get_tree().get_nodes_in_group("soldier")
+	for soldier in sols_present:
+		soldier.queue_free()
+	$WinMusic.play()
+	
+func _on_WinMusic_finished():
+	$Cover/AnimationPlayer.play("hide_scene")
