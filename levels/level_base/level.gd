@@ -33,6 +33,7 @@ onready var n_money_label := get_node("GUI/MoneyLabel")
 onready var n_soldier_label := get_node("GUI/SoldierLabel")
 onready var n_anger_label := get_node("GUI/AngerLabel")
 onready var n_health_label := get_node("GUI/HealthLabel")
+onready var n_game_over_menu := get_node("GUI/GameOverMenu")
 
 signal s_mob_money_ok(mob_id)
 signal s_can_deploy_soldier(spawner_id)
@@ -186,5 +187,6 @@ func _on_TaxButton_pressed():
 
 
 func _on_TrainButton_pressed():
-	update_money(money - TRAINING_COST)
-	update_soldier(total_soldier_power + 100)
+	if money > TRAINING_COST: 
+		update_money(money - TRAINING_COST)
+		update_soldier(total_soldier_power + 100)

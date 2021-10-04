@@ -123,6 +123,36 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="GameOverMenu" type="Popup" parent="GUI"]
+margin_right = 480.0
+margin_bottom = 264.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="GUI/GameOverMenu"]
+margin_right = 480.0
+margin_bottom = 264.0
+color = Color( 0, 0, 0, 0.501961 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/GameOverMenu"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/GameOverMenu/VBoxContainer"]
+margin_right = 480.0
+margin_bottom = 14.0
+text = "Game Over !"
+align = 1
+
 [connection signal="s_mob_entered" from="CentralBuilding" to="." method="_on_CentralBuilding_s_mob_entered"]
 [connection signal="pressed" from="GUI/TaxButton" to="." method="_on_TaxButton_pressed"]
 [connection signal="pressed" from="GUI/TrainButton" to="." method="_on_TrainButton_pressed"]
