@@ -1,8 +1,10 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://actors/mob/mob.gd" type="Script" id=1]
 [ext_resource path="res://assets/mob/v2/normal-mob-walk-v2.png" type="Texture" id=2]
 [ext_resource path="res://assets/mob/v2/riot-mob-walk-v2.png" type="Texture" id=3]
+[ext_resource path="res://assets/static/bar/mob_cooldown_bar/mob_cooldown_bar_progress.png" type="Texture" id=4]
+[ext_resource path="res://assets/static/bar/mob_cooldown_bar/mob_cooldown_bar_under.png" type="Texture" id=5]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -77,16 +79,17 @@ DEFAULT_CALM = 5.0
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 7 )
-frame = 1
 speed_scale = 2.0
 playing = true
 
-[node name="CalmBar" type="ProgressBar" parent="."]
-margin_left = -16.0
+[node name="CalmBar" type="TextureProgress" parent="."]
+margin_left = -8.0
 margin_top = -16.0
-margin_right = 16.0
+margin_right = 24.0
 margin_bottom = -8.0
-percent_visible = false
+rect_scale = Vector2( 0.5, 0.5 )
+texture_under = ExtResource( 5 )
+texture_progress = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
