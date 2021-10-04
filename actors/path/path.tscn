@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://actors/soldier_spawn/soldier_spawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/mob_spawn/mob_spawn.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/static/deploy_buttons/d_button_dead.png" type="Texture" id=4]
 [ext_resource path="res://assets/static/deploy_buttons/d_button_under.png" type="Texture" id=5]
 [ext_resource path="res://assets/static/deploy_buttons/d_button_new.png" type="Texture" id=6]
+[ext_resource path="res://assets/sfx/summon.wav" type="AudioStream" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.0
@@ -66,6 +67,9 @@ shape = SubResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 position = Vector2( 40, -16 )
 shape = SubResource( 2 )
+
+[node name="SpawnSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
 
 [connection signal="pressed" from="DeployButton" to="SoldierSpawn" method="_on_DeployButton_pressed"]
 [connection signal="timeout" from="CooldownTimer" to="SoldierSpawn" method="_on_CooldownTimer_timeout"]

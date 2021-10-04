@@ -12,6 +12,7 @@ export var DEFAULT_CALM: float = 3
 export var CENTRAL_HEALTH : int = 400
 export var TAX_VALUE : int = 1000
 export var TRAINING_COST : int  = 2000
+export var TIME : int = 100
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var money : int = 	MONEY
@@ -29,6 +30,7 @@ var mobs_occupancy : Array  = []
 onready var sc_mob := preload("res://actors/mob/mob.tscn")
 onready var sc_soldier := preload("res://actors/soldier/soldier.tscn")
 onready var n_spawn_timer := get_node("SpawnTimer")
+onready var n_game_timer := get_node("GameTimer")
 onready var n_money_label := get_node("GUI/MoneyLabel")
 onready var n_soldier_label := get_node("GUI/SoldierLabel")
 onready var n_anger_label := get_node("GUI/AngerLabel")
@@ -37,6 +39,16 @@ onready var n_health_bar := get_node("GUI/HealthBar")
 onready var n_game_over_menu := get_node("GUI/GameOverMenu")
 onready var n_tax_label := get_node("GUI/TaxLabel")
 onready var n_train_label := get_node("GUI/TrainLabel")
+onready var n_time_label := get_node("GUI/TimeLabel")
+
+# sounds
+onready var n_hit_sound := get_node("HitSound")
+onready var n_explode_sound := get_node("ExplodeSound")
+onready var n_spawn_sound := get_node("SpawnSound")
+onready var n_money_sound := get_node("MoneySound")
+onready var n_powerup_sound := get_node("PowerUpSound")
+onready var n_denied_sound := get_node("DeniedSound")
+
 
 signal s_mob_money_ok(mob_id)
 signal s_can_deploy_soldier(spawner_id)
@@ -50,7 +62,7 @@ func _ready():
 	n_health_bar.max_value = CENTRAL_HEALTH
 	n_tax_label.text = str(TAX_VALUE)
 	n_train_label.text = str(TRAINING_COST)
-	
+
 	update_money(MONEY)
 	update_soldier(SOLDIER_AMOUNT)
 	update_anger(0)
@@ -75,11 +87,15 @@ func _ready():
 		
 	# initialise spawn timer
 	n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
+	n_game_timer.wait_time = TIME
+	
 	n_spawn_timer.start()
+	n_game_timer.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	n_time_label.text = str(int(n_game_timer.time_left))
 	if(n_spawn_timer.is_stopped()):
 		spawn_mob_random()
 		n_spawn_timer.wait_time = rng.randf_range((SPAWN_INTERVAL_LOW / (anger + 1)) + 2, (SPAWN_INTERVAL_HIGH / (anger + 1)) + 2)
@@ -159,15 +175,18 @@ func _on_spawn_clear(mob_spawner_id:int):
 func _on_mob_clicked(mob_id:int):
 	var mob_instance = instance_from_id(mob_id)
 	
-	clear_occupancy_of_mob(mob_id)
-	
 	if money >= mob_instance.demand_amount and !mob_instance.is_angry:
+		n_money_sound.play()
+		clear_occupancy_of_mob(mob_id)
 		update_money(money - mob_instance.demand_amount)
 		emit_signal("s_mob_money_ok", mob_id)
+	else:
+		n_denied_sound.play()
 
 
 func _on_deploy_clicked(soldier_spawn_id : int):
 	if money >= SOLDIER_COST and total_soldier_power >= DEFAULT_SOLDIER_POWER:
+		n_spawn_sound.play()
 		emit_signal("s_can_deploy_soldier", soldier_spawn_id)
 		var soldier_spawner_instance = instance_from_id(soldier_spawn_id)
 		var soldier = sc_soldier.instance().init(soldier_spawner_instance.get_global_transform().get_rotation() + PI / 2, soldier_spawner_instance.global_position, DEFAULT_SOLDIER_POWER)
@@ -178,8 +197,12 @@ func _on_deploy_clicked(soldier_spawn_id : int):
 		update_money(money - SOLDIER_COST)
 		update_soldier(total_soldier_power - soldier.power)
 		add_child(soldier)
+	else:
+		n_denied_sound.play()
 		
 func _on_clash(mob_id: int, power_difference: int, mob_is_angry : bool):
+	
+	n_hit_sound.play()
 	
 	# update anger if soldier attacks white civilians
 	if !mob_is_angry:
@@ -192,17 +215,23 @@ func _on_clash(mob_id: int, power_difference: int, mob_is_angry : bool):
 
 
 func _on_CentralBuilding_s_mob_entered(mob_id:int):
+	
+	n_explode_sound.play()
+	
 	var mob_instance = instance_from_id(mob_id)
 	update_health(health - mob_instance.power)
 	mob_instance.queue_free()
 	
 	
 func _on_TaxButton_pressed():
-	update_money(money + TAX_VALUE)
-	update_anger(anger + 1)
+	if anger < MAX_ANGER:
+		n_powerup_sound.play()
+		update_money(money + TAX_VALUE)
+		update_anger(anger + 1)
 
 
 func _on_TrainButton_pressed():
 	if money > TRAINING_COST: 
+		n_powerup_sound.play()
 		update_money(money - TRAINING_COST)
 		update_soldier(total_soldier_power + 100)

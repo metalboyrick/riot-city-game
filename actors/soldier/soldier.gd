@@ -6,6 +6,7 @@ var power: int = 0
 var direction : Vector2 = Vector2.ZERO
 
 onready var n_power_label := get_node("MoneyBubble/PowerLabel")
+onready var n_hit_sound := get_node("HitSound")
 
 signal s_clash(mob_id, power_difference, mob_is_angry)
 
