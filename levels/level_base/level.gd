@@ -37,6 +37,7 @@ onready var n_anger_label := get_node("GUI/AngerLabel")
 onready var n_anger_bar := get_node("GUI/AngerBar")
 onready var n_health_bar := get_node("GUI/HealthBar")
 onready var n_game_over_menu := get_node("GUI/GameOverMenu")
+onready var n_pause_menu := get_node("GUI/PauseMenu")
 onready var n_tax_label := get_node("GUI/TaxLabel")
 onready var n_train_label := get_node("GUI/TrainLabel")
 onready var n_time_label := get_node("GUI/TimeLabel")
@@ -48,6 +49,7 @@ onready var n_spawn_sound := get_node("SpawnSound")
 onready var n_money_sound := get_node("MoneySound")
 onready var n_powerup_sound := get_node("PowerUpSound")
 onready var n_denied_sound := get_node("DeniedSound")
+onready var n_gameover_sound := get_node("GameOverSound")
 
 
 signal s_mob_money_ok(mob_id)
@@ -154,6 +156,7 @@ func update_anger(new_value:int):
 		n_anger_bar.frame = new_value
 
 func show_game_over():
+	n_gameover_sound.play()
 	get_tree().paused = true
 	n_game_over_menu.show()
 
@@ -235,3 +238,19 @@ func _on_TrainButton_pressed():
 		n_powerup_sound.play()
 		update_money(money - TRAINING_COST)
 		update_soldier(total_soldier_power + 100)
+
+
+func _on_RestartButton_pressed():
+	get_tree().paused = false
+	n_game_over_menu.hide()
+	get_tree().reload_current_scene()
+
+
+func _on_ContinueButton_pressed():
+	get_tree().paused = false
+	n_pause_menu.hide()
+
+
+func _on_PauseButton_pressed():
+	n_pause_menu.show()
+	get_tree().paused = true

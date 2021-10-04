@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://actors/path/path.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/central_building/central_building.tscn" type="PackedScene" id=2]
@@ -23,6 +23,9 @@
 [ext_resource path="res://assets/sfx/powerup.wav" type="AudioStream" id=21]
 [ext_resource path="res://assets/sfx/sound.wav" type="AudioStream" id=22]
 [ext_resource path="res://assets/fonts/arcade_classic.tres" type="DynamicFont" id=23]
+[ext_resource path="res://assets/ui/in-game/pause_inactive.png" type="Texture" id=24]
+[ext_resource path="res://assets/ui/in-game/pause_active.png" type="Texture" id=25]
+[ext_resource path="res://assets/sfx/game_over.wav" type="AudioStream" id=26]
 
 [sub_resource type="DynamicFontData" id=10]
 font_path = "res://assets/fonts/ARCADECLASSIC.TTF"
@@ -198,9 +201,9 @@ __meta__ = {
 }
 
 [node name="MoneyLabel" type="Label" parent="GUI"]
-margin_left = 152.0
+margin_left = 112.0
 margin_top = 7.0
-margin_right = 233.0
+margin_right = 193.0
 margin_bottom = 24.0
 custom_fonts/font = SubResource( 11 )
 text = "GASGSAGSA"
@@ -242,7 +245,7 @@ __meta__ = {
 }
 
 [node name="AngerBar" type="AnimatedSprite" parent="GUI"]
-position = Vector2( 304, 15 )
+position = Vector2( 328, 15 )
 frames = SubResource( 15 )
 
 [node name="HealthBar" type="TextureProgress" parent="GUI"]
@@ -320,7 +323,7 @@ margin_top = 248.0
 margin_right = 120.0
 margin_bottom = 268.0
 texture_normal = ExtResource( 8 )
-texture_pressed = ExtResource( 10 )
+texture_hover = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -331,15 +334,15 @@ margin_top = 247.0
 margin_right = 424.0
 margin_bottom = 267.0
 texture_normal = ExtResource( 11 )
-texture_pressed = ExtResource( 9 )
+texture_hover = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect2" type="TextureRect" parent="GUI"]
-margin_left = 136.0
+margin_left = 96.0
 margin_top = 7.0
-margin_right = 152.0
+margin_right = 112.0
 margin_bottom = 24.0
 texture = ExtResource( 14 )
 __meta__ = {
@@ -376,8 +379,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PauseButton" type="TextureButton" parent="GUI"]
+margin_left = 232.0
+margin_top = 7.0
+margin_right = 248.0
+margin_bottom = 24.0
+texture_normal = ExtResource( 24 )
+texture_hover = ExtResource( 25 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="GameOverMenu" type="Popup" parent="GUI"]
-visible = true
+pause_mode = 2
 margin_right = 480.0
 margin_bottom = 264.0
 __meta__ = {
@@ -406,6 +420,7 @@ margin_top = 143.0
 margin_right = 320.0
 margin_bottom = 150.0
 custom_fonts/font = ExtResource( 23 )
+enabled_focus_mode = 0
 text = "Restart"
 underline = 1
 __meta__ = {
@@ -417,8 +432,57 @@ margin_left = 192.0
 margin_top = 159.0
 margin_right = 320.0
 margin_bottom = 167.0
-focus_mode = 2
 custom_fonts/font = ExtResource( 23 )
+enabled_focus_mode = 0
+text = "Quit"
+underline = 1
+
+[node name="PauseMenu" type="Popup" parent="GUI"]
+pause_mode = 2
+margin_right = 480.0
+margin_bottom = 264.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="GUI/PauseMenu"]
+margin_right = 480.0
+margin_bottom = 264.0
+color = Color( 0, 0, 0, 0.780392 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/PauseMenu"]
+margin_left = 192.0
+margin_top = 111.0
+margin_right = 320.0
+margin_bottom = 113.0
+custom_fonts/font = ExtResource( 23 )
+text = "Game paused"
+
+[node name="ContinueButton" type="LinkButton" parent="GUI/PauseMenu"]
+margin_left = 192.0
+margin_top = 143.0
+margin_right = 320.0
+margin_bottom = 150.0
+custom_fonts/font = ExtResource( 23 )
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
+text = "Continue"
+underline = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="LinkButton" parent="GUI/PauseMenu"]
+margin_left = 192.0
+margin_top = 159.0
+margin_right = 320.0
+margin_bottom = 167.0
+custom_fonts/font = ExtResource( 23 )
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
 text = "Quit"
 underline = 1
 
@@ -440,9 +504,16 @@ stream = ExtResource( 20 )
 [node name="DeniedSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 22 )
 
+[node name="GameOverSound" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 26 )
+
 [connection signal="s_mob_entered" from="CentralBuilding" to="." method="_on_CentralBuilding_s_mob_entered"]
 [connection signal="pressed" from="GUI/TaxButton" to="." method="_on_TaxButton_pressed"]
 [connection signal="pressed" from="GUI/TrainButton" to="." method="_on_TrainButton_pressed"]
+[connection signal="pressed" from="GUI/PauseButton" to="." method="_on_PauseButton_pressed"]
+[connection signal="pressed" from="GUI/GameOverMenu/RestartButton" to="." method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GUI/PauseMenu/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 
 [editable path="Path"]
 [editable path="Path2"]
