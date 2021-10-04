@@ -1,16 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://actors/path/path.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/central_building/central_building.tscn" type="PackedScene" id=2]
 [ext_resource path="res://levels/level_base/level.gd" type="Script" id=3]
 [ext_resource path="res://assets/static/level_map.png" type="Texture" id=4]
+[ext_resource path="res://assets/static/bar/gov_health_bar/gov_health_bar_over.png" type="Texture" id=5]
+[ext_resource path="res://assets/static/bar/gov_health_bar/gov_health_bar_under.png" type="Texture" id=6]
+[ext_resource path="res://assets/static/bar/gov_health_bar/gov_health_bar_progress.png" type="Texture" id=7]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 3 )
 SPAWN_INTERVAL_LOW = 1.0
 SPAWN_INTERVAL_HIGH = 2.0
 MONEY = 2000
-CENTRAL_HEALTH = 50
 
 [node name="Map" type="Sprite" parent="."]
 position = Vector2( 240, 136 )
@@ -27,7 +29,7 @@ position = Vector2( 80, 216 )
 rotation = 4.21672
 
 [node name="MobSpawn" parent="Path" index="0"]
-position = Vector2( -1.51381, -64.4803 )
+position = Vector2( 1.1456, -35.7587 )
 
 [node name="SoldierSpawn" parent="Path" index="1"]
 position = Vector2( 0, 88 )
@@ -47,7 +49,7 @@ position = Vector2( 400, 216 )
 rotation = -4.21672
 
 [node name="MobSpawn" parent="Path2" index="0"]
-position = Vector2( -1.51381, -64.4803 )
+position = Vector2( -1.14557, -35.7587 )
 
 [node name="SoldierSpawn" parent="Path2" index="1"]
 position = Vector2( 0, 88 )
@@ -67,7 +69,7 @@ position = Vector2( 400, 80 )
 rotation = 1.07512
 
 [node name="MobSpawn" parent="Path3" index="0"]
-position = Vector2( -1.51381, -64.4803 )
+position = Vector2( 1.14561, -35.7588 )
 
 [node name="SoldierSpawn" parent="Path3" index="1"]
 position = Vector2( 0, 88 )
@@ -87,7 +89,7 @@ position = Vector2( 80, 80 )
 rotation = -1.07512
 
 [node name="MobSpawn" parent="Path4" index="0"]
-position = Vector2( -1.51381, -64.4803 )
+position = Vector2( -1.14559, -35.7587 )
 
 [node name="SoldierSpawn" parent="Path4" index="1"]
 position = Vector2( 0, 88 )
@@ -136,11 +138,25 @@ __meta__ = {
 }
 
 [node name="HealthLabel" type="Label" parent="GUI"]
-margin_left = 232.0
-margin_top = 120.0
-margin_right = 272.0
-margin_bottom = 134.0
+visible = false
+margin_left = 216.0
+margin_top = 72.0
+margin_right = 312.0
+margin_bottom = 86.0
 rect_scale = Vector2( 0.5, 0.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBar" type="TextureProgress" parent="GUI"]
+margin_left = 192.0
+margin_top = 72.0
+margin_right = 288.0
+margin_bottom = 80.0
+rounded = true
+texture_under = ExtResource( 6 )
+texture_over = ExtResource( 5 )
+texture_progress = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -33,6 +33,7 @@ onready var n_money_label := get_node("GUI/MoneyLabel")
 onready var n_soldier_label := get_node("GUI/SoldierLabel")
 onready var n_anger_label := get_node("GUI/AngerLabel")
 onready var n_health_label := get_node("GUI/HealthLabel")
+onready var n_health_bar := get_node("GUI/HealthBar")
 onready var n_game_over_menu := get_node("GUI/GameOverMenu")
 
 signal s_mob_money_ok(mob_id)
@@ -42,6 +43,9 @@ signal s_can_deploy_soldier(spawner_id)
 func _ready():
 	rng.randomize()
 	assert(SPAWN_INTERVAL_LOW < SPAWN_INTERVAL_HIGH)
+	
+	# set health bar value
+	n_health_bar.max_value = CENTRAL_HEALTH
 	
 	update_money(MONEY)
 	update_soldier(SOLDIER_AMOUNT)
@@ -68,6 +72,7 @@ func _ready():
 	# initialise spawn timer
 	n_spawn_timer.wait_time = rng.randf_range(SPAWN_INTERVAL_LOW, SPAWN_INTERVAL_HIGH)
 	n_spawn_timer.start()
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -112,7 +117,8 @@ func update_health(new_value: int):
 		show_game_over()
 		return 
 	health = new_value
-	n_health_label.text = "HEALTH: " + str(health)
+	n_health_label.text = "HEALTH: " + str(new_value)
+	n_health_bar.value = new_value
 	
 func update_money(new_value: int):
 	money = new_value
