@@ -55,7 +55,6 @@ func _ready():
 	else:
 		n_demand_label.visible = false
 		n_dollar.visible=false
-		modulate = Color(1,0,0)
 		emit_signal("s_anger_start")
 		
 	n_power_label.text = str(power)

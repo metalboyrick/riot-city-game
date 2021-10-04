@@ -7,7 +7,7 @@ export var MONEY : int = 1000
 export var SOLDIER_COST : int = 50
 export var SOLDIER_AMOUNT : int = 200
 export var DEFAULT_SOLDIER_POWER: int = 20
-export var MAX_ANGER: int = 4
+export var MAX_ANGER: int = 3
 export var DEFAULT_CALM: float = 3
 export var CENTRAL_HEALTH : int = 400
 export var TAX_VALUE : int = 1000
@@ -32,6 +32,7 @@ onready var n_spawn_timer := get_node("SpawnTimer")
 onready var n_money_label := get_node("GUI/MoneyLabel")
 onready var n_soldier_label := get_node("GUI/SoldierLabel")
 onready var n_anger_label := get_node("GUI/AngerLabel")
+onready var n_anger_bar := get_node("GUI/AngerBar")
 onready var n_health_bar := get_node("GUI/HealthBar")
 onready var n_game_over_menu := get_node("GUI/GameOverMenu")
 
@@ -130,6 +131,7 @@ func update_anger(new_value:int):
 	if anger < MAX_ANGER:
 		anger = new_value
 		n_anger_label.text = "ANGER: " + str(anger) + " of " + str(MAX_ANGER)
+		n_anger_bar.frame = new_value
 
 func show_game_over():
 	get_tree().paused = true
