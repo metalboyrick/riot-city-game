@@ -32,7 +32,6 @@ onready var n_spawn_timer := get_node("SpawnTimer")
 onready var n_money_label := get_node("GUI/MoneyLabel")
 onready var n_soldier_label := get_node("GUI/SoldierLabel")
 onready var n_anger_label := get_node("GUI/AngerLabel")
-onready var n_health_label := get_node("GUI/HealthLabel")
 onready var n_health_bar := get_node("GUI/HealthBar")
 onready var n_game_over_menu := get_node("GUI/GameOverMenu")
 
@@ -117,21 +116,20 @@ func update_health(new_value: int):
 		show_game_over()
 		return 
 	health = new_value
-	n_health_label.text = "HEALTH: " + str(new_value)
 	n_health_bar.value = new_value
 	
 func update_money(new_value: int):
 	money = new_value
-	n_money_label.text = "MONEY: " + str(money)
+	n_money_label.text = str(money)
 	
 func update_soldier(new_value: int):
 	total_soldier_power = new_value
-	n_soldier_label.text = "SOLDIER: " + str(new_value)
+	n_soldier_label.text = str(new_value)
 	
 func update_anger(new_value:int):
 	if anger < MAX_ANGER:
 		anger = new_value
-		n_anger_label.text = "ANGER: " + str(anger) + "/" + str(MAX_ANGER)
+		n_anger_label.text = "ANGER: " + str(anger) + " of " + str(MAX_ANGER)
 
 func show_game_over():
 	get_tree().paused = true

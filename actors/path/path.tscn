@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://actors/soldier_spawn/soldier_spawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/mob_spawn/mob_spawn.tscn" type="PackedScene" id=2]
@@ -9,6 +9,9 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 72 )
 
 [node name="Path" type="Node2D"]
 script = ExtResource( 3 )
@@ -51,6 +54,18 @@ one_shot = true
 position = Vector2( 0, -80 )
 rotation = 1.5708
 shape = SubResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -40, -16 )
+shape = SubResource( 2 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2( 40, -16 )
+shape = SubResource( 2 )
 
 [connection signal="pressed" from="DeployButton" to="SoldierSpawn" method="_on_DeployButton_pressed"]
 [connection signal="timeout" from="CooldownTimer" to="SoldierSpawn" method="_on_CooldownTimer_timeout"]
