@@ -25,7 +25,7 @@ __meta__ = {
 one_shot = true
 
 [node name="Path" parent="." instance=ExtResource( 1 )]
-position = Vector2( 80, 216 )
+position = Vector2( 80, 200 )
 rotation = 4.21672
 
 [node name="MobSpawn" parent="Path" index="0"]
@@ -35,20 +35,22 @@ position = Vector2( 0.572784, -17.8794 )
 position = Vector2( 0, 88 )
 
 [node name="DeployButton" parent="Path" index="2"]
-margin_top = 96.0
-margin_bottom = 116.0
+margin_left = 7.60132
+margin_top = 110.645
+margin_right = 23.6013
+margin_bottom = 130.645
 
 [node name="CooldownBar" parent="Path" index="3"]
-margin_left = 16.0
-margin_top = 120.0
-margin_right = 41.0
-margin_bottom = 134.0
+margin_left = 7.85492
+margin_top = 110.587
+margin_right = 32.8549
+margin_bottom = 126.587
 
 [node name="CollisionShape2D" parent="Path/SafePoint" index="0"]
 position = Vector2( -1.51382, -64.4803 )
 
 [node name="Path2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 400, 216 )
+position = Vector2( 400, 200 )
 rotation = -4.21672
 
 [node name="MobSpawn" parent="Path2" index="0"]
@@ -58,14 +60,16 @@ position = Vector2( -1.99965, -20.5183 )
 position = Vector2( 0, 88 )
 
 [node name="DeployButton" parent="Path2" index="2"]
-margin_top = 96.0
-margin_bottom = 116.0
+margin_left = 8.28169
+margin_top = 110.665
+margin_right = 24.2817
+margin_bottom = 130.665
 
 [node name="CooldownBar" parent="Path2" index="3"]
-margin_left = 16.0
-margin_top = 120.0
-margin_right = 41.0
-margin_bottom = 134.0
+margin_left = 8.25588
+margin_top = 111.232
+margin_right = 33.2559
+margin_bottom = 127.232
 
 [node name="CollisionShape2D" parent="Path2/SafePoint" index="0"]
 position = Vector2( 1.51379, -64.4803 )
@@ -81,14 +85,16 @@ position = Vector2( 0.572861, -17.8794 )
 position = Vector2( 0, 88 )
 
 [node name="DeployButton" parent="Path3" index="2"]
-margin_top = 96.0
-margin_bottom = 116.0
+margin_left = 8.20416
+margin_top = 111.406
+margin_right = 24.2042
+margin_bottom = 131.406
 
 [node name="CooldownBar" parent="Path3" index="3"]
-margin_left = 16.0
-margin_top = 120.0
-margin_right = 41.0
-margin_bottom = 134.0
+margin_left = 7.95709
+margin_top = 111.221
+margin_right = 23.9571
+margin_bottom = 127.221
 
 [node name="CollisionShape2D" parent="Path3/SafePoint" index="0"]
 position = Vector2( -1.51373, -64.4803 )
@@ -104,14 +110,16 @@ position = Vector2( -0.572792, -17.8794 )
 position = Vector2( 0, 88 )
 
 [node name="DeployButton" parent="Path4" index="2"]
-margin_top = 96.0
-margin_bottom = 116.0
+margin_left = 7.70278
+margin_top = 111.193
+margin_right = 23.7028
+margin_bottom = 131.193
 
 [node name="CooldownBar" parent="Path4" index="3"]
-margin_left = 16.0
-margin_top = 120.0
-margin_right = 41.0
-margin_bottom = 134.0
+margin_left = 8.33677
+margin_top = 110.709
+margin_right = 33.3368
+margin_bottom = 126.709
 
 [node name="CollisionShape2D" parent="Path4/SafePoint" index="0"]
 position = Vector2( 1.51381, -64.4803 )
