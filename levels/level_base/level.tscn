@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://actors/path/path.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/central_building/central_building.tscn" type="PackedScene" id=2]
@@ -7,6 +7,10 @@
 [ext_resource path="res://assets/static/bar/gov_health_bar/gov_health_bar_over.png" type="Texture" id=5]
 [ext_resource path="res://assets/static/bar/gov_health_bar/gov_health_bar_under.png" type="Texture" id=6]
 [ext_resource path="res://assets/static/bar/gov_health_bar/gov_health_bar_progress.png" type="Texture" id=7]
+[ext_resource path="res://assets/ui/in-game/tax_btn_1.png" type="Texture" id=8]
+[ext_resource path="res://assets/ui/in-game/train_btn_2.png" type="Texture" id=9]
+[ext_resource path="res://assets/ui/in-game/tax_btn_2.png" type="Texture" id=10]
+[ext_resource path="res://assets/ui/in-game/train_btn_1.png" type="Texture" id=11]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 3 )
@@ -192,22 +196,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TaxButton" type="Button" parent="GUI"]
-margin_left = 376.0
-margin_top = 8.0
-margin_right = 419.0
-margin_bottom = 28.0
-text = "Tax"
+[node name="TaxButton" type="TextureButton" parent="GUI"]
+margin_left = 96.0
+margin_top = 247.0
+margin_right = 160.0
+margin_bottom = 267.0
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TrainButton" type="Button" parent="GUI"]
-margin_left = 424.0
-margin_top = 8.0
-margin_right = 467.0
-margin_bottom = 28.0
-text = "Train"
+[node name="TrainButton" type="TextureButton" parent="GUI"]
+margin_left = 312.0
+margin_top = 247.0
+margin_right = 376.0
+margin_bottom = 267.0
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
