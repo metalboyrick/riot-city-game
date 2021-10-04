@@ -29,7 +29,7 @@ position = Vector2( 80, 216 )
 rotation = 4.21672
 
 [node name="MobSpawn" parent="Path" index="0"]
-position = Vector2( 1.1456, -35.7587 )
+position = Vector2( 0.572784, -17.8794 )
 
 [node name="SoldierSpawn" parent="Path" index="1"]
 position = Vector2( 0, 88 )
@@ -49,7 +49,7 @@ position = Vector2( 400, 216 )
 rotation = -4.21672
 
 [node name="MobSpawn" parent="Path2" index="0"]
-position = Vector2( -1.14557, -35.7587 )
+position = Vector2( -1.99965, -20.5183 )
 
 [node name="SoldierSpawn" parent="Path2" index="1"]
 position = Vector2( 0, 88 )
@@ -69,7 +69,7 @@ position = Vector2( 400, 80 )
 rotation = 1.07512
 
 [node name="MobSpawn" parent="Path3" index="0"]
-position = Vector2( 1.14561, -35.7588 )
+position = Vector2( 0.572861, -17.8794 )
 
 [node name="SoldierSpawn" parent="Path3" index="1"]
 position = Vector2( 0, 88 )
@@ -89,7 +89,7 @@ position = Vector2( 80, 80 )
 rotation = -1.07512
 
 [node name="MobSpawn" parent="Path4" index="0"]
-position = Vector2( -1.14559, -35.7587 )
+position = Vector2( -0.572792, -17.8794 )
 
 [node name="SoldierSpawn" parent="Path4" index="1"]
 position = Vector2( 0, 88 )

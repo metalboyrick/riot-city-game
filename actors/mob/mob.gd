@@ -15,8 +15,9 @@ var power : int = 0
 # select all the necessary child nodes
 onready var n_calm_timer := get_node("CalmTimer")
 onready var n_calm_bar := get_node("CalmBar")
-onready var n_demand_label := get_node("DemandLabel")
-onready var n_power_label := get_node("PowerLabel")
+onready var n_demand_label := get_node("MoneyBubble/DemandLabel")
+onready var n_dollar := get_node("MoneyBubble/DollarSign")
+onready var n_power_label := get_node("MoneyBubble/PowerLabel")
 onready var n_sprite := get_node("AnimatedSprite")
 
 # signals
@@ -49,12 +50,17 @@ func _ready():
 	if !is_angry:
 		n_calm_timer.wait_time = calm_time
 		n_calm_timer.start()
-		n_demand_label.text = "Price: " + str(demand_amount)
+		n_demand_label.text = str(demand_amount)
+		n_power_label.visible = false
 	else:
-		n_demand_label.text = "!"
+		n_demand_label.visible = false
+		n_dollar.visible=false
 		modulate = Color(1,0,0)
 		emit_signal("s_anger_start")
-	n_power_label.text = "Power: " +  str(power)
+		
+	n_power_label.text = str(power)
+		
+	
 	
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
@@ -69,8 +75,10 @@ func _physics_process(delta):
 		
 	if n_calm_timer.time_left == 0:
 		if n_calm_bar.visible:
+			n_power_label.visible = true
 			n_calm_bar.visible = false
-			n_demand_label.text = "!"
+			n_demand_label.visible = false
+			n_dollar.visible = false
 			is_angry = true
 			n_sprite.animation = "angry"
 			emit_signal("s_anger_start")
@@ -79,7 +87,7 @@ func _physics_process(delta):
 
 func update_power(new_value: int):
 	power = new_value
-	n_power_label.text = "Power: " +  str(power)
+	n_power_label.text = str(power)
 
 func _on_money_ok(mob_id:int):
 	if mob_id == get_instance_id():
