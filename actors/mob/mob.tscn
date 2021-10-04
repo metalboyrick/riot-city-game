@@ -66,7 +66,7 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 7.44528, 8 )
+extents = Vector2( 8, 8 )
 
 [node name="Mob" type="KinematicBody2D"]
 input_pickable = true
@@ -75,17 +75,17 @@ SPEED = 0.1
 DEFAULT_CALM = 5.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, 2.38419e-07 )
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 7 )
+frame = 4
 speed_scale = 2.0
 playing = true
 
 [node name="CalmBar" type="ProgressBar" parent="."]
 margin_left = -16.0
-margin_top = -18.841
+margin_top = -16.0
 margin_right = 16.0
-margin_bottom = -10.841
+margin_bottom = -8.0
 percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -96,9 +96,9 @@ one_shot = true
 
 [node name="DemandLabel" type="Label" parent="."]
 margin_left = -16.0
-margin_top = -27.2378
+margin_top = -24.0
 margin_right = 48.0
-margin_bottom = -13.2378
+margin_bottom = -10.0
 rect_scale = Vector2( 0.5, 0.5 )
 text = "500"
 align = 1
@@ -107,10 +107,10 @@ __meta__ = {
 }
 
 [node name="PowerLabel" type="Label" parent="."]
-margin_left = -15.8016
-margin_top = -35.2378
-margin_right = 48.1984
-margin_bottom = -21.2378
+margin_left = -16.0
+margin_top = -32.0
+margin_right = 48.0
+margin_bottom = -18.0
 rect_scale = Vector2( 0.5, 0.5 )
 text = "500"
 align = 1
